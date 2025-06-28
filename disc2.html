@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Teste de Perfil Comportamental DISC</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .question p {
+            font-weight: bold;
+        }
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+        .options li {
+            margin: 10px 0;
+        }
+        .options input {
+            margin-right: 10px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 18px;
+            color: #333;
+            display: none; /* Inicialmente oculto */
+        }
+        #result h2 {
+            font-size: 24px;
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Teste de Perfil Comportamental DISC</h1>
+        <form id="quiz-form">
+            <!-- Pergunta 1 -->
+            <div class="question">
+                <p>1. Você prefere:</p>
+                <ul class="options">
+                    <li><input type="radio" name="q1" value="D"> Tomar a iniciativa e liderar.</li>
+                    <li><input type="radio" name="q1" value="I"> Trabalhar em equipe e socializar.</li>
+                    <li><input type="radio" name="q1" value="S"> Ajudar os outros e ser prestativo.</li>
+                    <li><input type="radio" name="q1" value="C"> Ser meticuloso e analisar detalhes.</li>
+                </ul>
+            </div>
+
+            <!-- Pergunta 2 -->
+            <div class="question">
+                <p>2. Quando surgem problemas, você prefere:</p>
+                <ul class="options">
+                    <li><input type="radio" name="q2" value="D"> Enfrentar diretamente e buscar soluções rápidas.</li>
+                    <li><input type="radio" name="q2" value="I"> Discutir com as pessoas envolvidas para entender suas perspectivas.</li>
+                    <li><input type="radio" name="q2" value="S"> Encontrar uma solução pacífica que envolva a colaboração.</li>
+                    <li><input type="radio" name="q2" value="C"> Analisar as causas e implicações antes de tomar uma decisão.</li>
+                </ul>
+            </div>
+
+            <!-- Pergunta 3 -->
+            <div class="question">
+                <p>3. Você se sente mais motivado quando:</p>
+                <ul class="options">
+                    <li><input type="radio" name="q3" value="D"> Está liderando e tomando decisões.</li>
+                    <li><input type="radio" name="q3" value="I"> Interage com outras pessoas e compartilha ideias.</li>
+                    <li><input type="radio" name="q3" value="S"> Está ajudando alguém ou trabalhando em um ambiente harmonioso.</li>
+                    <li><input type="radio" name="q3" value="C"> Tem tempo para analisar, planejar e organizar tudo meticulosamente.</li>
+                </ul>
+            </div>
+
+            <!-- Pergunta 4 até Pergunta 10 -->
+            <button type="button" onclick="calculateResult()">Ver Resultado</button>
+        </form>
+
+        <div id="result">
+            <h2>Resultado do Teste</h2>
+            <p id="result-text"></p>
+        </div>
+    </div>
+
+    <script>
+        function calculateResult() {
+            let scoreD = 0, scoreI = 0, scoreS = 0, scoreC = 0;
+            const form = document.forms['quiz-form']; // Obtém o formulário do teste
+            const resultText = document.getElementById('result-text');
+
+            // Verifica as respostas e soma as pontuações
+            for (let i = 1; i <= 3; i++) {  // Altere para 20 ou conforme necessário
+                const question = form['q' + i];
+                if (question) {
+                    for (let j = 0; j < question.length; j++) {
+                        if (question[j].checked) {
+                            switch (question[j].value) {
+                                case 'D': scoreD++; break;
+                                case 'I': scoreI++; break;
+                                case 'S': scoreS++; break;
+                                case 'C': scoreC++; break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Lógica para determinar o perfil DISC
+            let result = '';
+            if (scoreD > scoreI && scoreD > scoreS && scoreD > scoreC) {
+                result = 'Seu perfil é Dominante (D): Você é uma pessoa assertiva, orientada a resultados e busca controle.';
+            } else if (scoreI > scoreD && scoreI > scoreS && scoreI > scoreC) {
+                result = 'Seu perfil é Influente (I): Você é sociável, gosta de interagir e motiva os outros.';
+            } else if (scoreS > scoreD && scoreS > scoreI && scoreS > scoreC) {
+                result = 'Seu perfil é Estável (S): Você é uma pessoa calma, paciente e focada no apoio aos outros.';
+            } else if (scoreC > scoreD && scoreC > scoreI && scoreC > scoreS) {
+                result = 'Seu perfil é Conformista (C): Você é analítico, detalhista e se preocupa com a qualidade e precisão.';
+            } else {
+                result = 'Não foi possível determinar um perfil claro. Tente novamente.';
+            }
+
+            // Exibe o resultado
+            resultText.textContent = result;
+            document.getElementById('result').style.display = 'block';  // Torna o resultado visível
+        }
+    </script>
+
+</body>
+</html>
